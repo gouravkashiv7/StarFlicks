@@ -10,10 +10,6 @@
   --color-red-dark: #e03131;
 }
 
-/* ------------------------------------------------ */
-/* 1. GLOBAL STYLES (Apply to all screen sizes) */
-/* ------------------------------------------------ */
-
 * {
   margin: 0;
   padding: 0;
@@ -21,21 +17,19 @@
 }
 
 html {
-  font-size: 62.5%; /* 1rem = 10px */
+  font-size: 62.5%;
 }
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+
   color: var(--color-text);
   background-color: var(--color-background-900);
-  /* Desktop padding, will be overridden for mobile */
   padding: 2.4rem;
 }
 
-/* ------------------------------------------------ */
-/* 2. DESKTOP BASE LAYOUT (Default styles for wide screens) */
-/* ------------------------------------------------ */
+/* ******* */
 
 .nav-bar {
   display: grid;
@@ -49,7 +43,6 @@ body {
 
 .main {
   margin-top: 2.4rem;
-  /* Fixed height for side-by-side boxes */
   height: calc(100vh - 7.2rem - 3 * 2.4rem);
   display: flex;
   gap: 2.4rem;
@@ -57,7 +50,6 @@ body {
 }
 
 .box {
-  /* Fixed width for desktop */
   width: 42rem;
   max-width: 42rem;
   background-color: var(--color-background-500);
@@ -79,6 +71,8 @@ body {
   font-size: 2rem;
   padding: 4.8rem;
 }
+
+/* ******* */
 
 .logo {
   display: flex;
@@ -102,10 +96,11 @@ body {
   padding: 1.1rem 1.6rem;
   font-size: 1.8rem;
   border-radius: 0.7rem;
-  /* Fixed width for desktop */
   width: 40rem;
   transition: all 0.3s;
   color: var(--color-text);
+
+  /* background-color: var(--color-background-900); */
   background-color: var(--color-primary-light);
 }
 
@@ -158,6 +153,7 @@ body {
   column-gap: 2.4rem;
   font-size: 1.6rem;
   align-items: center;
+
   padding: 1.6rem 3.2rem;
   border-bottom: 1px solid var(--color-background-100);
 }
@@ -195,6 +191,7 @@ body {
 .btn-delete {
   position: absolute;
   right: 2.4rem;
+
   height: 1.8rem;
   aspect-ratio: 1;
   border-radius: 50%;
@@ -210,6 +207,8 @@ body {
 .btn-delete:hover {
   background-color: var(--color-red-dark);
 }
+
+/* ******* */
 
 .summary {
   padding: 2.2rem 3.2rem 1.8rem 3.2rem;
@@ -238,13 +237,15 @@ body {
   gap: 0.8rem;
 }
 
+/* ******* */
+
 .details {
   line-height: 1.4;
   font-size: 1.4rem;
 }
 
 .details header {
-  display: flex; /* Poster and overview side-by-side */
+  display: flex;
 }
 
 .details section {
@@ -324,6 +325,7 @@ body {
   aspect-ratio: 1;
   border-radius: 50%;
   border: none;
+  /* background-color: var(--color-text); */
   background-color: #fff;
   color: var(--color-background-500);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
@@ -335,94 +337,4 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-/* ------------------------------------------------ */
-/* 3. MOBILE OVERRIDES (Responsive adjustments) */
-/* ------------------------------------------------ */
-
-@media (max-width: 768px) {
-  /* 3.1. General Spacing */
-  body {
-    padding: 1rem;
-  }
-
-  /* 3.2. Main Layout */
-  .main {
-    margin-top: 1.6rem;
-    height: auto;
-    flex-direction: column; /* Stack boxes vertically */
-    gap: 1.6rem;
-  }
-
-  .box {
-    width: 100%;
-    max-width: 100%;
-    height: 40vh; /* Gives both boxes scrollable space on mobile */
-  }
-
-  /* 3.3. Navigation Bar */
-  .nav-bar {
-    height: auto;
-    padding: 1.2rem 1.6rem;
-    /* Redefine grid for mobile: logo/results on one row, search below */
-    grid-template-columns: auto 1fr;
-    grid-template-rows: auto auto;
-    gap: 1rem;
-  }
-
-  .logo {
-    grid-column: 1 / 2;
-  }
-
-  .num-results {
-    grid-column: 2 / -1;
-    justify-self: end;
-    align-self: center;
-  }
-
-  /* Make search full width */
-  .search {
-    grid-column: 1 / -1;
-    width: 100%;
-    font-size: 1.6rem;
-    padding: 0.8rem 1rem;
-    margin-top: 0.5rem;
-  }
-
-  /* 3.4. Movie List and Details */
-  .list li {
-    column-gap: 1.6rem;
-    padding: 1rem 1.6rem;
-    font-size: 1.4rem;
-  }
-
-  .list h3 {
-    font-size: 1.6rem;
-  }
-
-  .btn-delete {
-    right: 1.6rem;
-  }
-
-  /* Stack poster and overview in the details view */
-  .details header {
-    flex-direction: column;
-  }
-
-  .details img {
-    width: 100%;
-  }
-
-  .details-overview {
-    padding: 1.6rem;
-  }
-
-  .details-overview h2 {
-    font-size: 2rem;
-  }
-
-  .details section {
-    padding: 2rem;
-  }
 }
