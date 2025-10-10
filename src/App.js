@@ -263,8 +263,11 @@ function Main({ children }) {
 function Box({ children }) {
   const [isOpen, setIsOpen] = useState(true);
   return (
-    <div className="box">
-      <button className="btn-toggle" onClick={() => setIsOpen((open) => !open)}>
+    <div className={`box ${isOpen ? "box-active" : "box-inactive"}`}>
+      <button
+        className="btn-toggle "
+        onClick={() => setIsOpen((open) => !open)}
+      >
         {isOpen ? "-" : "+"}
       </button>
       {isOpen && children}

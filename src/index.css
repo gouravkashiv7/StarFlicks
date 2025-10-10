@@ -361,6 +361,14 @@ body {
     height: 40vh; /* Gives both boxes scrollable space on mobile */
   }
 
+  .box-active {
+    height: 70vh;
+  }
+
+  .box-inactive {
+    height: 10vh;
+  }
+
   /* 3.3. Navigation Bar */
   .nav-bar {
     height: auto;
