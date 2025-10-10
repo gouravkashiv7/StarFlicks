@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import StarRating from "./StarRating.js";
 import { useLocalStorageState } from "./useLocalStorageState.js";
 import { useKey } from "./useKey.js";
-const average = (arr) =>
-  arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
+
+import WatchedSummary from "./components/WatchedSummary";
+import Box from "./components/Box.js";
 
 const KEY = "59da6682";
 
@@ -13,15 +14,39 @@ export default function App() {
   const [error, setError] = useState("");
   const [selectedId, setSelectedId] = useState("");
   const [query, setQuery] = useState("");
+  // Add state for box visibility
+  const [isBox1Open, setIsBox1Open] = useState(false);
+  const [isBox2Open, setIsBox2Open] = useState(true);
 
   const [watched, setWatched] = useLocalStorageState([], "watched");
 
   function handleSelectMovie(id) {
     setSelectedId(selectedId === id ? "" : id);
+    // Close box 1 on mobile when movie is selected
+    if (window.innerWidth <= 768) {
+      setIsBox1Open(false);
+      setIsBox2Open(true);
+    }
   }
 
   function handleCloseMovie(id) {
     setSelectedId("");
+    if (window.innerWidth <= 768) {
+      setIsBox1Open(true);
+    }
+  }
+
+  // Function to toggle boxes manually
+  function handleToggleBox(boxNumber) {
+    if (boxNumber === 1) {
+      setIsBox1Open((open) => !open);
+      // If opening box 1 on mobile, ensure box 2 is closed if no movie selected
+      if (window.innerWidth <= 768 && !isBox1Open && selectedId) {
+        setIsBox2Open(false);
+      }
+    } else {
+      setIsBox2Open((open) => !open);
+    }
   }
 
   function handleAddWatched(movie) {
@@ -30,6 +55,13 @@ export default function App() {
   function handleDeleteWatched(id) {
     setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
   }
+
+  useEffect(() => {
+    if (query.length < 3) {
+      setIsBox1Open(true);
+      setIsBox2Open(true);
+    }
+  }, [query]);
 
   useEffect(
     function () {
@@ -83,14 +115,14 @@ export default function App() {
         <NumResults movies={movies} />
       </Navbar>
       <Main>
-        <Box>
+        <Box isOpen={isBox1Open} onToggle={() => handleToggleBox(1)}>
           {isLoading && <Loader />}
           {!isLoading && !error && (
             <Movie movies={movies} onSelectMovie={handleSelectMovie} />
           )}
           {error && <ErrorMessage message={error} />}
         </Box>
-        <Box>
+        <Box isOpen={isBox2Open} onToggle={() => handleToggleBox(2)}>
           {selectedId ? (
             <MovieDetails
               selectedId={selectedId}
@@ -260,21 +292,6 @@ function Main({ children }) {
   return <main className="main">{children}</main>;
 }
 
-function Box({ children }) {
-  const [isOpen, setIsOpen] = useState(true);
-  return (
-    <div className={`box ${isOpen ? "box-active" : "box-inactive"}`}>
-      <button
-        className="btn-toggle "
-        onClick={() => setIsOpen((open) => !open)}
-      >
-        {isOpen ? "-" : "+"}
-      </button>
-      {isOpen && children}
-    </div>
-  );
-}
-
 function Movie({ movies, onSelectMovie }) {
   return (
     <ul className="list list-movies">
@@ -294,37 +311,6 @@ function Movie({ movies, onSelectMovie }) {
   );
 }
 
-function WatchedSummary({ watched }) {
-  const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
-  const avgUserRating = average(watched.map((movie) => movie.userRating));
-  const avgRuntime = average(watched.map((movie) => movie.runtime));
-
-  return (
-    <>
-      <div className="summary">
-        <h2>Movies you watched</h2>
-        <div>
-          <p>
-            <span>#️⃣</span>
-            <span>{watched.length} movies</span>
-          </p>
-          <p>
-            <span>⭐️</span>
-            <span>{avgImdbRating.toFixed(2)}</span>
-          </p>
-          <p>
-            <span>🌟</span>
-            <span>{avgUserRating.toFixed(2)}</span>
-          </p>
-          <p>
-            <span>⏳</span>
-            <span>{avgRuntime.toFixed(2)} min</span>
-          </p>
-        </div>
-      </div>
-    </>
-  );
-}
 function WatchedMovieList({ watched, onDeleteWatched }) {
   return (
     <ul className="list">
